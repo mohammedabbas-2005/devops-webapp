@@ -10,11 +10,21 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3
 
-      - name: Show Files
-        run: ls
+    - name: Checkout Repository
+      uses: actions/checkout@v3
 
-      - name: Build Step
-        run: echo "Build Successful"
+    - name: Show Files
+      run: ls
+
+    - name: Build Step
+      run: echo "Build Successful"
+
+    - name: Send Slack Alert
+      if: always()
+      run: |
+        curl -X POST -H 'Content-type: application/json' \
+        --data '{
+          "text":"✅ DevOps-CI-Bot\n✔ Build Successful!"
+        }' \
+        ${{ secrets.SLACK_WEBHOOK }}
